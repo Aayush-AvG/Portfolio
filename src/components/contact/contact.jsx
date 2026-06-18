@@ -282,7 +282,7 @@ const Contact = () => {
                     Transmitting...
                   </>
                 ) : status === 'success' ? (
-                  'Payload Delivered'
+                  'Message Sent'
                 ) : (
                   <>
                     Send
@@ -308,7 +308,7 @@ const Contact = () => {
             >
               {status === 'error' 
                 ? errMsg 
-                : '> Process finished with exit code 0. Auto-reply confirmation dispatched.'}
+                : '> Message has been sent successfully. Thank you for reaching out!'}
             </div>
           )}
         </form>
