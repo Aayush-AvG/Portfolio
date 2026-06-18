@@ -7,7 +7,7 @@ const LapContainer = () => {
   return (
     <Canvas >
         <Suspense fallback="loading...">
-        <Stage environment={"night"} intensity={0.6} contactShadow={true} >
+        <Stage environment={"night"} intensity={0.6} contactShadow={true} adjustCamera={false} >
 <Laptop/>
         </Stage>
 <OrbitControls enableZoom={false} autoRotate/>
