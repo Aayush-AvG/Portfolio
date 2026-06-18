@@ -27,23 +27,7 @@ const SolarSystem = () => {
           ))}
         </div>
 
-        {/* Main planetary rings - hidden by default, visible on hover */}
-        <div className="absolute w-44 h-44 rounded-full border-2 animate-spin opacity-0 group-hover:opacity-40 transition-opacity duration-300" 
-             style={{ 
-               animationDuration: '50s', 
-               borderImage: 'linear-gradient(45deg, #00f5ff, #ff00ff, #00ff41) 1',
-               boxShadow: '0 0 20px rgba(0, 245, 255, 0.3), inset 0 0 20px rgba(255, 0, 255, 0.2)'
-             }}>
-        </div>
-
-        <div className="absolute w-36 h-36 rounded-full border animate-spin opacity-0 group-hover:opacity-60 transition-opacity duration-300" 
-             style={{ 
-               animationDuration: '30s', 
-               animationDirection: 'reverse',
-               borderColor: '#3b82f6',
-              //  boxSha  dow: '0 0 15px rgba(59, 130, 246, 0.4)'
-             }}>
-        </div>
+       
 
         {/* Orbiting satellites/moons */}
         <div className="absolute w-32 h-32 animate-spin" style={{ animationDuration: '12s' }}>

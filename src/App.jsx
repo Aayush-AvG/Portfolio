@@ -1,29 +1,48 @@
-import {useEffect} from "react"
+import { useEffect, lazy, Suspense, useRef } from "react"
 import Lenis from "lenis"
-import Contact from "./components/contact/contact"
+import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
 import Front from "./components/Main/front"
-import Projects from "./components/projects/projects"
-import Services from "./components/services/services"
+import { useFadeOnScroll } from "./hooks/gsapPage"
+
+const Services = lazy(() => import("./components/services/services"))
+const Projects = lazy(() => import("./components/projects/projects"))
+const Contact = lazy(() => import("./components/contact/contact"))
+
+gsap.registerPlugin(ScrollTrigger)
+
+// Tiny wrapper that fires a callback once it mounts
+const OnMount = ({ onMount }) => {
+  useEffect(() => { onMount() }, [])
+  return null
+}
 
 const App = () => {
+  const gsapReady = useRef(false)
+
   useEffect(() => {
-    const lenis = new Lenis();
+    const lenis = new Lenis()
+    lenis.on("scroll", ScrollTrigger.update)
+    gsap.ticker.add((time) => lenis.raf(time * 1000))
+    gsap.ticker.lagSmoothing(0)
+    return () => lenis.destroy()
+  }, [])
 
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-  }
+  useFadeOnScroll(".fade-section", gsapReady)
 
-     requestAnimationFrame(raf);
-
-    return () => lenis.destroy();
-  }, []);
   return (
     <div className="bg-zinc-900 text-white w-full">
-      <Front/>
-      <Services/>
-      <Projects/>
-      <Contact/>
+      <Front />
+      <Suspense fallback={null}>
+        <Services />
+        <Projects />
+        <Contact />
+        {/* Fires after all lazy components are in the DOM */}
+        <OnMount onMount={() => {
+          gsapReady.current = true
+          ScrollTrigger.refresh()
+        }} />
+      </Suspense>
     </div>
   )
 }

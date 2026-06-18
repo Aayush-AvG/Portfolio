@@ -108,7 +108,7 @@ const Contact = () => {
 
   return (
     <div
-      className="relative min-h-screen flex items-center justify-center p-6 overflow-hidden"
+      className="relative fade-section min-h-screen flex items-center justify-center p-6 overflow-hidden"
       style={{ backgroundColor: '#0a0a0c', fontFamily: "'Inter', sans-serif" }}
     >
       {/* ─── Luxury 3D Background Orbs ─── */}

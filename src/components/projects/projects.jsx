@@ -1,6 +1,6 @@
 const Projects = () => {
   return (
-    <div className='h-screen snap-y snap-mandatory snap-center'>Projects</div>
+    <div className='h-screen fade-section snap-y snap-mandatory snap-center'>Projects</div>
   )
 }
 

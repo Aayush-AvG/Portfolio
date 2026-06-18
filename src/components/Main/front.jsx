@@ -78,7 +78,7 @@ const Front = () => {
 
   return (
     <div 
-      className='h-screen front snap-y snap-center snap-mandatory overflow-hidden relative flex flex-col lg:flex-row'
+      className='h-screen fade-section front snap-y snap-center snap-mandatory overflow-hidden relative flex flex-col lg:flex-row'
       style={{
         background: 'linear-gradient(135deg, #000000 0%, #0a0a0a 15%, #1a1a1a 30%, #2a2a2a 45%, #1a1a1a 60%, #0f0f0f 80%, #000000 100%)',
         willChange: 'auto'
@@ -553,7 +553,7 @@ const Front = () => {
             <img 
               src="main.png" 
               alt="" 
-              className="h-[85%] mt-15  w-auto object-cover relative z-10"
+              className="h-[90%] lg:h-[85%] mt-15  w-auto object-cover relative z-10"
               style={{
                 filter: 'brightness(1.1) contrast(1.25) grayscale(1)',
                 willChange: 'auto',
@@ -591,7 +591,7 @@ const Front = () => {
         </div>
 
         {/* Solar System - Responsive positioning */}
-        <div className="absolute -bottom-15 right-20 md:-bottom-0 md:right-68 sm:bottom-40 lg:bottom-25 sm:right-12 lg:right-17 z-10">
+        <div className="absolute hidden md:block -bottom-15 right-20 md:-bottom-0 md:right-0 lg:bottom-25 lg:right-17 z-10">
           <div className="scale-75 md:scale-100 sm:scale-90 lg:scale-100">
             <SolarSystem />
           </div>

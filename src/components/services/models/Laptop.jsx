@@ -4,6 +4,8 @@ import { LoopOnce } from "three";
 import { useTexture } from "@react-three/drei";
 import * as THREE from "three";
 
+useGLTF.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
+
 
 export function Laptop(props) {
   const group = useRef();
