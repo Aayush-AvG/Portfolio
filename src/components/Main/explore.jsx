@@ -207,7 +207,7 @@ const SolarSystem = () => {
 
         /* Glow effects on hover */
         .group:hover .animate-spin {
-          animation-duration: 0.5s !important;
+          animation-duration: paused !important;
         }
       `}</style>
     </div>
