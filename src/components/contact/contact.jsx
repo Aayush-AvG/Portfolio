@@ -147,28 +147,14 @@ const Contact = () => {
         {/* ─── Header Section ─── */}
         <div className="mb-10 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-6">
           <div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight mb-2 flex items-center gap-3">
-              <span className="w-8 h-8 rounded-full bg-gradient-to-tr from-green-800 to-green-400 flex items-center justify-center shadow-[0_0_15px_rgba(212,175,55,0.4)]">
-                <svg className="w-4 h-4 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </span>
-              Initialize Contact
+            <h1 className="text-3xl sm:text-4xl font-bold font-[anzo3] text-white tracking-tight mb-2 flex items-center gap-3">
+              
+            Contact Us
             </h1>
-            <p className="text-gray-400 font-mono text-sm tracking-wide">
-              Secure transmission protocol engaged.
-            </p>
+           
           </div>
           
-          <div className="flex gap-2">
-            <span className="px-3 py-1 text-xs font-mono rounded-full border border-white/10 bg-black/30 text-gray-300">
-              v3.0.1
-            </span>
-            <span className="px-3 py-1 text-xs font-mono rounded-full border border-green-400/30 bg-green-400/10 text-green-500 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-              Available
-            </span>
-          </div>
+         
         </div>
 
         {/* ─── Form Section ─── */}
@@ -180,7 +166,7 @@ const Contact = () => {
               <GlassLabel text="Name" />
               <input
                 type="text"
-                placeholder="John Doe"
+                placeholder="User"
                 value={form.name}
                 onChange={handleInput('name')}
                 onFocus={() => setFocusedField('name')}
@@ -194,7 +180,7 @@ const Contact = () => {
               <GlassLabel text="Email Address" />
               <input
                 type="email"
-                placeholder="architect@domain.com"
+                placeholder="user@domain.com"
                 value={form.email}
                 onChange={handleInput('email')}
                 onFocus={() => setFocusedField('email')}
@@ -242,7 +228,7 @@ const Contact = () => {
               <GlassLabel text="Phone Number (Optional)" />
               <input
                 type="tel"
-                placeholder="+1 (555) 000-0000"
+                placeholder="+977 XXX-XXXX-XXX"
                 value={form.phone}
                 onChange={handleInput('phone')}
                 onFocus={() => setFocusedField('phone')}
