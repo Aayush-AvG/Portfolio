@@ -136,7 +136,10 @@ const TiltText = () => {
           
           <div className="relative w-20 h-20 bg-white/10 backdrop-blur-md rounded-full border border-white/30 group-hover:border-cyan-400/70 transition-all duration-300 group-hover:scale-110 group-hover:shadow-[0_0_40px_rgba(0,255,255,0.4)]">
             <img 
-              src="del.png" 
+              src="del.webp" 
+              width={400}
+              height={400}
+              loading="lazy"
               alt="Deliotte Certification" 
               className="w-full h-full lg:rotate-0 md:rotate-270 object-cover rounded-full p-2 transition-all duration-300 group-hover:brightness-110" 
             />
@@ -178,7 +181,10 @@ const TiltText = () => {
           
           <div className="relative w-20 h-20 bg-slate-800/90 backdrop-blur-md rounded-full border border-amber-400/40 group-hover:border-amber-400/80 transition-all duration-300 group-hover:scale-110 group-hover:shadow-[0_0_40px_rgba(251,191,36,0.4)]">
             <img 
-              src="ibm.png" 
+              src="ibm.webp"
+              width={740}
+              height={740}
+              loading='lazy' 
               alt="IBM Certification" 
               className="w-full h-full lg:rotate-0 md:rotate-270 object-cover rounded-full p-2 transition-all duration-300 group-hover:brightness-110" 
             />
@@ -215,8 +221,11 @@ const TiltText = () => {
           
           <div className="relative w-20 h-20 bg-slate-800/95 backdrop-blur-md rounded-full border border-green-400/40 group-hover:border-green-400/80 transition-all duration-300 group-hover:scale-110 group-hover:shadow-[0_0_40px_rgba(34,197,94,0.4)]">
             <img 
-              src="fcc.png" 
+              src="fcc.webp" 
               alt="FreeCodeCamp Certification" 
+              width={881}
+              height={441}
+              loading="lazy"
               className="w-full lg:rotate-0 md:rotate-270 h-full object-cover rounded-full p-2 transition-all duration-300 group-hover:brightness-115" 
             />
             

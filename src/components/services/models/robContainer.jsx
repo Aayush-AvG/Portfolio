@@ -1,19 +1,34 @@
 import { Canvas } from "@react-three/fiber"
-import { Suspense } from "react"
-import { OrbitControls, PerspectiveCamera, Stage } from "@react-three/drei"
+import { Suspense, useRef } from "react"
 import { Robot } from "./robot"
+import { OrbitControls, PerspectiveCamera, Stage, AdaptiveDpr, Stats } from "@react-three/drei"
+
+const isMob = () => /Mobi|Android/i.test(navigator.userAgent)
 
 const RobContainer = () => {
+  const mobile = useRef(isMob())
+
   return (
-    <Canvas>
-         <Suspense fallback="loading...">
-         <Stage environment={"night"} intensity={0.5} contactShadow={true} >
-            <Robot/>
-         </Stage>
- <OrbitControls enableZoom={false} autoRotate/>
- <PerspectiveCamera makeDefault position={[-1, 0, 1.8]} fov={50} zoom={0.7}/>
-         </Suspense>
-     </Canvas>
+    <Canvas
+      dpr={[1, mobile.current ? 1.5 : 2]}
+      gl={{ antialias: !mobile.current, powerPreference: "high-performance" }}
+    >
+      <AdaptiveDpr pixelated />
+
+      {/* These MUST be outside Suspense */}
+      <PerspectiveCamera makeDefault position={[-1, 0, 1.8]} fov={50} zoom={0.7} />
+      <OrbitControls enableZoom={false} autoRotate regress />
+
+      <Suspense fallback={null}>
+        <Stage
+          environment="night"
+          intensity={0.5}
+          contactShadow={!mobile.current}
+        >
+          <Robot />
+        </Stage>
+      </Suspense>
+    </Canvas>
   )
 }
 

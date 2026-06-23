@@ -18,29 +18,21 @@ body, html {
 }
 
 @font-face {
-  font-family: anzo;
-  src: url(./assets/file.woff2);
-}
-@font-face {
-  font-family: anzo1;
-  src: url(./assets/madefor-text.var.original.woff2);
-}
-@font-face {
   font-family: anzo2;
   src: url(./assets/file1.woff2);
+  font-display: swap;
 }
 @font-face {
   font-family: anzo3;
   src: url(./assets/file2.woff2);
+  font-display: swap;
 }
 @font-face {
   font-family: anzo4;
   src: url(./assets/file3.woff2);
+  font-display: swap;
 }
-@font-face {
-  font-family: anzo5;
-  src: url(./assets/file4.woff2);
-}
+
 
 
 

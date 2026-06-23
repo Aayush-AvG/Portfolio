@@ -1,10 +1,24 @@
 import TiltText from "./TiltText";
+import { lazy, Suspense } from "react"
 import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Speech from "./speech";
-import SolarSystem from "./explore";
+const Speech = lazy(() => import("./speech"))
+const SolarSystem = lazy(() => import("./explore"))
 
 const Front = () => {
+  const [isMd, setIsMd] = useState(() => window.innerWidth >= 768)
+  const [showGalaxy, setShowGalaxy] = useState(false)
+
+useEffect(() => {
+  const handler = () => setIsMd(window.innerWidth >= 768)
+  window.addEventListener('resize', handler)
+  return () => window.removeEventListener('resize', handler)
+}, [])
+
+useEffect(() => {
+  const timer = setTimeout(() => setShowGalaxy(true), 2000)
+  return () => clearTimeout(timer)
+}, [])
 
   // Memoized static elements to prevent re-renders
   const staticParticles = useMemo(() => {
@@ -132,7 +146,7 @@ const Front = () => {
       {/* Social panel - Always vertical, positioned at right edge */}
       <div className="absolute right-0 sm:top-8 md:top-[15%] lg:top-[17%] lg:right-12 transform lg:-translate-y-1/2 z-30">
         <div className="relative">
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-2xl lg:rounded-br-4xl border border-white/20"></div>
+          <div className="absolute inset-0 bg-black/60 lg:rounded-br-4xl border border-white/20"></div>
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent rounded-3xl blur-sm"></div>
           
           {/* Always vertical layout */}
@@ -140,28 +154,28 @@ const Front = () => {
             <a href="https://www.instagram.com/avg.aayush_69/" target="#" className="group relative"> 
               <div className="absolute inset-0 bg-white/10 rounded-2xl blur-md group-hover:bg-white/20 transition-all duration-300"></div>
               <div className="relative p-1 sm:p-1.5 md:p-2 lg:p-3 rounded-2xl border border-white/20 group-hover:border-white/40 transition-all duration-300 group-hover:scale-110">
-                <img src="insta.gif" alt="" className="w-7 sm:w-8 md:w-9 lg:w-6"/>
+                <img src="insta.gif" width={400} height={400} alt="" loading="lazy" className="w-7 sm:w-8 md:w-9 lg:w-6"/>
               </div>
             </a>
             
             <a href="https://www.linkedin.com/in/aayush-raj-singh-757839378/" target="_blank" className="group relative"> 
               <div className="absolute inset-0 bg-white/10 rounded-2xl blur-md group-hover:bg-white/20 transition-all duration-300"></div>
               <div className="relative p-1 sm:p-1.5 md:p-2 lg:p-3 rounded-2xl border border-white/20 group-hover:border-white/40 transition-all duration-300 group-hover:scale-110">
-                <img src="linked.gif" alt="" className="w-7 sm:w-8 md:w-9 lg:w-6"/>
+                <img src="linked.gif" width={325} height={316} alt="" loading="lazy" className="w-7 sm:w-8 md:w-9 lg:w-6"/>
               </div>
             </a>
             
             <a href="https://github.com/Aayush-AvG" target="_blank"  className="group relative"> 
               <div className="absolute inset-0 bg-white/10 rounded-2xl blur-md group-hover:bg-white/20 transition-all duration-300"></div>
               <div className="relative p-1 sm:p-1.5 md:p-2 lg:p-3 rounded-2xl border border-white/20 group-hover:border-white/40 transition-all duration-300 group-hover:scale-110">
-                <img src="git.gif" alt="" className="w-7 sm:w-8 md:w-9 lg:w-6"/>
+                <img src="git.gif" width={314} height={313} alt="" loading="lazy" className="w-7 sm:w-8 md:w-9 lg:w-6"/>
               </div>
             </a>
             
             <div className="mt-1 md:mt-3 lg:mt-5 w-12 sm:w-16 md:w-20 lg:w-24 text-center flex items-center justify-center p-1 origin-center 
               rounded-tr-2xl rounded-bl-2xl 
               bg-gradient-to-br from-red-600 via-rose-500 to-pink-500 
-              backdrop-blur-sm bg-opacity-70
+             bg-opacity-70
               shadow-[0_0_25px_rgba(255,70,70,0.6)] 
               hover:shadow-[0_0_40px_rgba(255,70,70,0.9)] 
               hover:scale-110 transition-all duration-300 cursor-pointer 
@@ -181,8 +195,9 @@ const Front = () => {
           <div className="space-y-3 sm:space-y-4 lg:space-y-6 relative">
             
             {/* Optimized 3D Galaxy Animation - Hidden on lg and below */}
-            <div className="hidden xl:block absolute right-0 sm:right-10 lg:left-80 top-0 w-32 sm:w-48 lg:w-64 h-32 sm:h-48 lg:h-64 pointer-events-none opacity-60 sm:opacity-70 lg:opacity-80" style={{willChange: 'transform'}}>
-              
+           {!isMd && showGalaxy && (
+  <div className="absolute right-0 sm:right-10 lg:left-80 top-0 w-32 sm:w-48 lg:w-64 h-32 sm:h-48 lg:h-64 pointer-events-none opacity-60 sm:opacity-70 lg:opacity-80" style={{willChange: 'transform'}}>
+
               {/* Central Core */}
               <motion.div
                 className="sm:w-2 sm:h-2 lg:w-[10px] lg:h-[10px] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
@@ -364,6 +379,8 @@ const Front = () => {
               ))}
 
             </div>
+           )}
+
 
             <div className="relative z-100">
               <div className="absolute inset-0 text-3xl sm:text-3xl md:text-4xl lg:text-6xl font-[anzo2] text-white/20 blur-sm">
@@ -403,7 +420,6 @@ const Front = () => {
                   height: '500px',
                   background: 'linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))',
                   borderRadius: '48% 52% 68% 32% / 42% 68% 32% 58%',
-                  backdropFilter: 'blur(20px)',
                   border: '1px solid rgba(255,255,255,0.1)',
                   boxShadow: `
                     inset 0 1px 0 rgba(255,255,255,0.1),
@@ -438,7 +454,6 @@ const Front = () => {
                   height: '150px',
                   background: 'linear-gradient(125deg, rgba(255,255,255,0.06), rgba(255,255,255,0.01))',
                   borderRadius: '65% 35% 45% 55% / 38% 62% 38% 62%',
-                  backdropFilter: 'blur(15px)',
                   border: '1px solid rgba(255,255,255,0.08)',
                   boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08), 0 10px 30px rgba(0,0,0,0.2)',
                   willChange: 'transform'
@@ -469,7 +484,6 @@ const Front = () => {
                   height: '108px',
                   background: 'linear-gradient(165deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01))',
                   borderRadius: '42% 58% 38% 62% / 55% 45% 65% 35%',
-                  backdropFilter: 'blur(12px)',
                   border: '1px solid rgba(255,255,255,0.06)',
                   boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), 0 8px 25px rgba(0,0,0,0.15)',
                   willChange: 'transform'
@@ -551,8 +565,13 @@ const Front = () => {
             </div>
 
             <img 
-              src="main.png" 
-              alt="" 
+              src="main.webp" 
+             alt="Aayush"
+             width={2040}
+             height={1440}
+             fetchpriority="high"    // tells browser: load this first
+             loading="eager"
+             decoding="async"
               className="h-[90%] lg:h-[85%] mt-15  w-auto object-cover relative z-10"
               style={{
                 filter: 'brightness(1.1) contrast(1.25) grayscale(1)',
@@ -586,20 +605,24 @@ const Front = () => {
         {/* Speech Component - Responsive positioning and sizing */}
         <div className="absolute top-60 w-[720px] md:top-60 md:left-50 sm:top-80 lg:top-50 -left-4 sm:left-0 lg:left-[55%]  pr-4 sm:pr-0 sm:transform-translate-x-1/2 lg:translate-x-0">
           <div className="scale-80 sm:scale-90 lg:scale-100">
-            <Speech />
+            <Suspense fallback={null}>
+              <Speech />
+            </Suspense>
           </div>
         </div>
 
         {/* Solar System - Responsive positioning */}
         <div className="absolute hidden md:block -bottom-15 right-20 md:-bottom-0 md:right-0 lg:bottom-25 lg:right-17 z-10">
           <div className="scale-75 md:scale-100 sm:scale-90 lg:scale-100">
-            <SolarSystem />
+            <Suspense fallback={null}>
+              <SolarSystem />
+            </Suspense>
           </div>
         </div>
       </div>
 
       {/* Optimized floating particles with memoization - Reduce count on mobile */}
-      {staticParticles.slice(0, window.innerWidth < 640 ? 8 : 15).map((particle) => (
+      {staticParticles.slice(0, isMd ? 8 : 15).map((particle) => (
         <div
           key={particle.id}
           className="absolute pointer-events-none"

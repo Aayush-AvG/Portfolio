@@ -3,6 +3,8 @@ import { useGraph } from '@react-three/fiber'
 import { useGLTF, useAnimations } from '@react-three/drei'
 import { SkeletonUtils } from 'three-stdlib'
 
+useGLTF.setDecoderPath('/draco/');
+
 export function Man(props) {
   const group = React.useRef()
   const { scene, animations } = useGLTF('/man.glb')
@@ -106,4 +108,3 @@ export function Man(props) {
   )
 }
 
-useGLTF.preload('/man.glb')

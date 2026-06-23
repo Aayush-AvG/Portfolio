@@ -1,11 +1,7 @@
-import { useState, useEffect } from 'react';
-import RobContainer from './models/robContainer';
-import ManContainer from './models/manContainer';
-import LapContainer from './models/lapContainer';
-
-
-
-
+import { useState, useEffect, lazy, Suspense } from 'react';
+const LapContainer = lazy(() => import('./models/lapContainer'))
+const ManContainer = lazy(() => import('./models/manContainer'))
+const RobContainer = lazy(() => import('./models/robContainer'))
 // Responsive Counter Component
 const Counter = ({ from = 0, to, text }) => {
   const [count, setCount] = useState(from);
@@ -120,21 +116,27 @@ const Services = () => {
   const services = [
     {
       id: 1,
-      img: "/web.gif",
+      img: "/web.webp",
       title: "Web Development",
       counter: 10,
+      width: 241,
+      height: 236
     },
     {
       id: 2,
-      img: "/soft.gif",
+      img: "/soft.webp",
       title: "Software Development",
       counter: 5,
+      width: 235,
+      height: 236
     },
     {
       id: 3,
-      img: "/brand.gif",
+      img: "/brand.webp",
       title: "AI Agents",
       counter: 3,
+      width: 233,
+      height: 237
     },
   ];
 
@@ -153,7 +155,6 @@ const Services = () => {
         
         {/* Header */}
         <h1 className="font-[anzo4] text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold items-center tracking-tighter justify-center flex mb-8 lg:mb-12 text-center relative z-30">
-          <img src="help.gif" alt="" className="w-12 sm:w-16 md:w-20 lg:w-20 mr-2 sm:mr-4"/> 
           <span className="text-white">What can I assist you with?</span>
         </h1>
 
@@ -166,6 +167,8 @@ const Services = () => {
             <div 
               className="group relative w-full sm:w-5/6 lg:w-full p-1 rounded-2xl cursor-pointer transition-all duration-700 hover:scale-105"
               key={service.id}
+              width={service.width}
+              height={service.height}
               onClick={() => setCurrentServiceId(service.id)}
               style={{
                 background: 'linear-gradient(135deg, rgba(5, 5, 5, 0.9) 0%, rgba(15, 15, 15, 0.95) 100%)',
@@ -359,7 +362,12 @@ const Services = () => {
               minHeight: '600px'
             }}
           >
-            {currentServiceId === 1 ? <LapContainer /> : currentServiceId===2 ? <ManContainer />: <RobContainer />}
+           {currentServiceId === 1 
+  ? <Suspense fallback={null}><LapContainer /></Suspense> 
+  : currentServiceId === 2 
+  ? <Suspense fallback={null}><ManContainer /></Suspense>
+  : <Suspense fallback={null}><RobContainer /></Suspense>
+}
           </div>
         </div>
       </div>
@@ -380,7 +388,12 @@ const Services = () => {
               minHeight: '750px'
             }}
           >
-           {currentServiceId === 1 ? <LapContainer /> : currentServiceId===2 ? <ManContainer />: <RobContainer />}
+            {currentServiceId === 1 
+  ? <Suspense fallback={null}><LapContainer /></Suspense> 
+  : currentServiceId === 2 
+  ? <Suspense fallback={null}><ManContainer /></Suspense>
+  : <Suspense fallback={null}><RobContainer /></Suspense>
+}
           </div>
         </div>
       </div>

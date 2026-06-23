@@ -1,7 +1,7 @@
 import React, { useEffect, useState, } from 'react';
 
+const words = ["Dream Big", "Build Bold", "Create Magic", "Inspire Change"];
 const Speech = (props) => {
-      const words = ["Dream Big", "Build Bold", "Create Magic", "Inspire Change"];
   const [text, setText] = useState(''); 
   const [isDeleting, setIsDeleting] = useState(false); 
   const [wordIndex, setWordIndex] = useState(0); 
@@ -36,17 +36,17 @@ const Speech = (props) => {
         <div className="absolute inset-0 rounded-full border-2 border-amber-100/40 animate-ping"></div>
         <div className="absolute inset-0 rounded-full border-2 border-amber-100/35 animate-ping" style={{animationDelay: '0.2s'}}></div>
         <div className="absolute inset-0 rounded-full border-2 border-amber-100/35 animate-ping" style={{animationDelay: '0.9s'}}></div>
-        <div className="absolute inset-0 rounded-full border-2 border-amber-100/30 animate-ping" style={{animationDelay: '1.6s'}}></div>
-        <div className="absolute inset-0 rounded-full border-2 border-amber-100/35 animate-ping" style={{animationDelay: '2.3s'}}></div>
-        <div className="absolute inset-0 rounded-full border-2 border-amber-100/25 animate-ping" style={{animationDelay: '3s'}}></div>
-        <div className="absolute inset-0 rounded-full border-2 border-amber-100/20 animate-ping" style={{animationDelay: '3.7s'}}></div>
+        <div className="absolute inset-0 rounded-full border-2 border-amber-100/35 animate-ping" style={{animationDelay: '1.6s'}}></div>
+        <div className="absolute inset-0 rounded-full border-2 border-amber-100/20 animate-ping" style={{animationDelay: '2.3s'}}></div>
        
         {/* Outer glow shadow */}
         <div className="absolute inset-0 rounded-full bg-amber-100/20 blur-md animate-pulse"></div>
         
         {/* Main image */}
         <img 
-          src="pfp.png" 
+          src="main.webp" 
+          width={2040}
+          height={1440}
           alt="" 
           className="relative z-10 rounded-full border-amber-100 border-2 w-25 shadow-lg shadow-amber-100/50 hover:w-30 hover:shadow-xl hover:shadow-amber-100/70 transition-all duration-300"
         />

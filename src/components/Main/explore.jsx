@@ -1,6 +1,27 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 const SolarSystem = () => {
+
+  const asteroids = useMemo(() => 
+  [...Array(16)].map((_, i) => ({
+    width: 2 + Math.random() * 3,
+    height: 2 + Math.random() * 3,
+    offset: 110 + Math.random() * 20,
+    delay: i * 0.2
+  })), []);
+
+  const particles = useMemo(() =>
+  [...Array(20)].map((_, i) => ({
+    width: 1 + Math.random() * 2,
+    hue1: 180 + Math.random() * 60,
+    hue2: 200 + Math.random() * 40,
+    top: 20 + Math.random() * 60,
+    left: 20 + Math.random() * 60,
+    delay: Math.random() * 6,
+    duration: 2 + Math.random() * 4,
+    glowHue: Math.random() * 360
+  })), []);
+
   return (
     <div className="flex items-center justify-center relative">
       <div className="relative w-48 h-48 flex items-center justify-center group cursor-pointer">
@@ -10,21 +31,21 @@ const SolarSystem = () => {
 
         {/* Outer asteroid belt */}
         <div className="absolute w-56 h-56 rounded-full animate-spin" style={{ animationDuration: '40s' }}>
-          {[...Array(16)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute bg-gradient-to-r from-orange-400 to-red-500 rounded-full animate-pulse"
-              style={{
-                width: `${2 + Math.random() * 3}px`,
-                height: `${2 + Math.random() * 3}px`,
-                top: '50%',
-                left: '50%',
-                transform: `translate(-50%, -50%) rotate(${i * 22.5}deg) translateY(-${110 + Math.random() * 20}px)`,
-                animationDelay: `${i * 0.2}s`,
-                boxShadow: '0 0 8px rgba(255, 100, 0, 0.6)'
-              }}
-            />
-          ))}
+          {asteroids.map((asteroid, i) => (
+  <div
+    key={i}
+    className="absolute bg-gradient-to-r from-orange-400 to-red-500 rounded-full animate-pulse"
+    style={{
+      width: `${asteroid.width}px`,
+      height: `${asteroid.height}px`,
+      top: '50%',
+      left: '50%',
+      transform: `translate(-50%, -50%) rotate(${i * 22.5}deg) translateY(-${asteroid.offset}px)`,
+      animationDelay: `${asteroid.delay}s`,
+      boxShadow: '0 0 8px rgba(255, 100, 0, 0.6)'
+    }}
+  />
+))}
         </div>
 
        
@@ -85,7 +106,7 @@ const SolarSystem = () => {
              style={{
               //  boxShadow: '0 0 30px rgba(0, 245, 255, 0.6), 0 0 60px rgba(59, 130, 246, 0.4), inset 0 0 20px rgba(255, 255, 255, 0.2)'
              }}>
-          <div className="w-18 h-18 bg-black/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/40">
+          <div className="w-18 h-18 bg-black/10 rounded-full flex items-center justify-center border border-white/40">
             <div 
               className="w-16 h-16 rounded-full bg-gradient-to-br from-gray-400 via-white-500 to-gray-800 animate-pulse"
               style={{
@@ -98,24 +119,22 @@ const SolarSystem = () => {
         </div>
 
         {/* Floating energy particles */}
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute rounded-full animate-float"
-            style={{
-              width: `${1 + Math.random() * 2}px`,
-              height: `${1 + Math.random() * 2}px`,
-              background: `linear-gradient(45deg, 
-                hsl(${180 + Math.random() * 60}, 70%, 60%), 
-                hsl(${200 + Math.random() * 40}, 80%, 70%))`,
-              top: `${20 + Math.random() * 60}%`,
-              left: `${20 + Math.random() * 60}%`,
-              animationDelay: `${Math.random() * 6}s`,
-              animationDuration: `${2 + Math.random() * 4}s`,
-              boxShadow: `0 0 8px hsla(${Math.random() * 360}, 80%, 70%, 0.8)`
-            }}
-          />
-        ))}
+   {particles.map((p, i) => (
+  <div
+    key={i}
+    className="absolute rounded-full animate-float"
+    style={{
+      width: `${p.width}px`,
+      height: `${p.width}px`,
+      background: `linear-gradient(45deg, hsl(${p.hue1}, 70%, 60%), hsl(${p.hue2}, 80%, 70%))`,
+      top: `${p.top}%`,
+      left: `${p.left}%`,
+      animationDelay: `${p.delay}s`,
+      animationDuration: `${p.duration}s`,
+      boxShadow: `0 0 8px hsla(${p.glowHue}, 80%, 70%, 0.8)`
+    }}
+  />
+))}
 
         {/* Shooting stars */}
         {[...Array(3)].map((_, i) => (

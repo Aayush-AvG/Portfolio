@@ -1,34 +1,38 @@
 import { Canvas } from "@react-three/fiber"
-import { Suspense, useState, useEffect } from "react"
+import { Suspense, useState, useEffect, useRef } from "react"
 import { Laptop } from "./Laptop"
-import { OrbitControls, PerspectiveCamera, Environment, ContactShadows } from "@react-three/drei"
+import { OrbitControls, PerspectiveCamera, Environment, ContactShadows, AdaptiveDpr } from "@react-three/drei"
+
+const isMob = () => /Mobi|Android/i.test(navigator.userAgent)
 
 const LapContainer = () => {
-
-    const [isMd, setIsMd] = useState(false);
+  const [isMd, setIsMd] = useState(false)
+  const mobile = useRef(isMob())
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    const mq = window.matchMedia("(max-width: 768px)")
+    const handle = (e) => setIsMd(e.matches)
+    setIsMd(mq.matches)
+    mq.addEventListener("change", handle)
+    return () => mq.removeEventListener("change", handle)
+  }, [])
 
-    const handleChange = (e) => setIsMd(e.matches);
-
-    setIsMd(mediaQuery.matches);
-    mediaQuery.addEventListener("change", handleChange);
-
-    return () => mediaQuery.removeEventListener("change", handleChange);
-  }, []);
   return (
-    <Canvas style={{ touchAction: "none" }}>
-  
+    <Canvas
+      dpr={[1, mobile.current ? 1.5 : 2]}
+      gl={{ antialias: !mobile.current, powerPreference: "high-performance" }}
+      style={{ touchAction: "none" }}
+    >
+      <AdaptiveDpr pixelated />
 
-      {/* Outside Suspense so camera is always stable */}
-      <PerspectiveCamera makeDefault position={[-6.5, 2, 7]} fov={50} zoom={isMd ? 0.5 : 1}/>
+      <PerspectiveCamera makeDefault position={[-6.5, 2, 7]} fov={50} zoom={isMd ? 0.5 : 1} />
       <OrbitControls
         enableZoom={false}
         autoRotate
         autoRotateSpeed={1.5}
         enableDamping
         dampingFactor={0.05}
+        regress
       />
 
       <Suspense fallback={null}>
@@ -37,9 +41,10 @@ const LapContainer = () => {
         <directionalLight position={[2, 3, 2]} intensity={1} />
         <directionalLight position={[-2, 1, -1]} intensity={0.3} />
         <Laptop />
-        <ContactShadows position={[0, -1, 0]} opacity={0.4} scale={10} blur={1.5} />
+        {!mobile.current && (
+          <ContactShadows position={[0, -1, 0]} opacity={0.4} scale={10} blur={1.5} />
+        )}
       </Suspense>
-
     </Canvas>
   )
 }

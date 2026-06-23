@@ -4,7 +4,7 @@ import { LoopOnce } from "three";
 import { useTexture } from "@react-three/drei";
 import * as THREE from "three";
 
-useGLTF.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
+useGLTF.setDecoderPath('/draco/');
 
 
 export function Laptop(props) {
@@ -12,7 +12,7 @@ export function Laptop(props) {
 
   const { nodes, materials, animations } = useGLTF("/laptop.glb");
   const { actions, names } = useAnimations(animations, group);
-  const screenTexture = useTexture("/ss.png");
+  const screenTexture = useTexture("/ss.webp");
 
 screenTexture.repeat.set(2, 2);
 screenTexture.offset.set(-0.5, -0.5);
@@ -231,5 +231,3 @@ screenTexture.offset.set(-0.5, -0.5);
     </group>
   );
 }
-
-useGLTF.preload("/laptop.glb");

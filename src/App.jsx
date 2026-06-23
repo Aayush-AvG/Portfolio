@@ -35,7 +35,11 @@ const App = () => {
       <Front />
       <Suspense fallback={null}>
         <Services />
+        </Suspense>
+        <Suspense fallback={null}>  
         <Projects />
+        </Suspense>
+        <Suspense fallback={null}>
         <Contact />
         {/* Fires after all lazy components are in the DOM */}
         <OnMount onMount={() => {

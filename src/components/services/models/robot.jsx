@@ -1,6 +1,8 @@
 import React from 'react'
 import { useGLTF } from '@react-three/drei'
 
+useGLTF.setDecoderPath('/draco/');
+
 export function Robot(props) {
   const { nodes, materials } = useGLTF('/ai_robot.glb')
   return (
@@ -46,4 +48,3 @@ export function Robot(props) {
   )
 }
 
-useGLTF.preload('/ai_robot.glb')
