@@ -25,7 +25,7 @@ const LapContainer = () => {
     >
       <AdaptiveDpr pixelated />
 
-      <PerspectiveCamera makeDefault position={[-6.5, 2, 7]} fov={50} zoom={isMd ? 0.5 : 1} />
+      <PerspectiveCamera makeDefault position={[-6.5, 2, 6.1]} fov={50} zoom={isMd ? 0.5 : 0.7} />
       <OrbitControls
         enableZoom={false}
         autoRotate

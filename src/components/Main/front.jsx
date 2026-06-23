@@ -151,24 +151,60 @@ useEffect(() => {
           
           {/* Always vertical layout */}
           <div className="relative flex flex-col items-center top-4 space-y-6">
-            <a href="https://www.instagram.com/avg.aayush_69/" target="#" className="group relative"> 
-              <div className="absolute inset-0 bg-white/10 rounded-2xl blur-md group-hover:bg-white/20 transition-all duration-300"></div>
-              <div className="relative p-1 sm:p-1.5 md:p-2 lg:p-3 rounded-2xl border border-white/20 group-hover:border-white/40 transition-all duration-300 group-hover:scale-110">
-                <img src="insta.gif" width={400} height={400} alt="" loading="lazy" className="w-7 sm:w-8 md:w-9 lg:w-6"/>
-              </div>
-            </a>
+           <a
+  href="https://www.instagram.com/avg.aayush_69/"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="group relative"
+>
+  <div className="absolute inset-0 bg-white/10 rounded-2xl blur-md group-hover:bg-white/20 transition-all duration-300"></div>
+
+  <div className="relative p-1 sm:p-1.5 md:p-2 lg:p-3 rounded-2xl border border-white/20 group-hover:border-white/40 transition-all duration-300 group-hover:scale-110">
+    <video
+      src="/insta.webm"
+      width={400}
+      height={400}
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="metadata"
+      className="w-7 sm:w-8 md:w-9 lg:w-6"
+    />
+  </div>
+</a>
             
             <a href="https://www.linkedin.com/in/aayush-raj-singh-757839378/" target="_blank" className="group relative"> 
               <div className="absolute inset-0 bg-white/10 rounded-2xl blur-md group-hover:bg-white/20 transition-all duration-300"></div>
               <div className="relative p-1 sm:p-1.5 md:p-2 lg:p-3 rounded-2xl border border-white/20 group-hover:border-white/40 transition-all duration-300 group-hover:scale-110">
-                <img src="linked.gif" width={325} height={316} alt="" loading="lazy" className="w-7 sm:w-8 md:w-9 lg:w-6"/>
+                 <video
+      src="/linked.webm"
+      width={400}
+      height={400}
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="metadata"
+      className="w-7 sm:w-8 md:w-9 lg:w-6"
+    />
               </div>
             </a>
             
             <a href="https://github.com/Aayush-AvG" target="_blank"  className="group relative"> 
               <div className="absolute inset-0 bg-white/10 rounded-2xl blur-md group-hover:bg-white/20 transition-all duration-300"></div>
               <div className="relative p-1 sm:p-1.5 md:p-2 lg:p-3 rounded-2xl border border-white/20 group-hover:border-white/40 transition-all duration-300 group-hover:scale-110">
-                <img src="git.gif" width={314} height={313} alt="" loading="lazy" className="w-7 sm:w-8 md:w-9 lg:w-6"/>
+    <video
+      src="/git.webm"
+      width={400}
+      height={400}
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="metadata"
+      className="w-7 sm:w-8 md:w-9 lg:w-6"
+    />
               </div>
             </a>
             
@@ -564,21 +600,22 @@ useEffect(() => {
               />
             </div>
 
-            <img 
-              src="main.webp" 
-             alt="Aayush"
-             width={2040}
-             height={1440}
-             fetchpriority="high"    // tells browser: load this first
-             loading="eager"
-             decoding="async"
-              className="h-[90%] lg:h-[85%] mt-15  w-auto object-cover relative z-10"
-              style={{
-                filter: 'brightness(1.1) contrast(1.25) grayscale(1)',
-                willChange: 'auto',
-                
-              }}
-            />
+          <img 
+  src="/main_lg.webp"
+  srcSet="
+    /main_sm.webp 600w,
+    /main_md.webp 900w,
+    /main_lg.webp 1200w
+  "
+  sizes="(max-width:768px) 90vw, 60vw"
+  alt="Aayush"
+  width={1200}
+  height={850}
+  fetchPriority="high"
+  loading="eager"
+  decoding="async"
+  className="h-[90%] lg:h-[85%] mt-15 w-auto object-cover relative z-10"
+/>
           </div>
         </div>
 

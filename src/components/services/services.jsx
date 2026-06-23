@@ -373,7 +373,7 @@ const Services = () => {
       </div>
 
       {/* Bottom Section - 3D Model (Tablet/Medium screens) */}
-      <div className="hidden md:flex lg:hidden w-full flex-col justify-center items-center relative px-4 py-4 z-10">
+      <div className="hidden md:flex lg:hidden w-full flex-col justify-center items-center relative px-4 py-20 z-10">
         <div 
           className="w-full flex items-center justify-center"
           style={{

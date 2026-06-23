@@ -43,11 +43,17 @@ const Speech = (props) => {
         <div className="absolute inset-0 rounded-full bg-amber-100/20 blur-md animate-pulse"></div>
         
         {/* Main image */}
-        <img 
-          src="main.webp" 
-          width={2040}
-          height={1440}
-          alt="" 
+     <img 
+  src="/main_lg.webp"
+  srcSet="
+    /main_sm.webp 600w,
+    /main_md.webp 900w,
+    /main_lg.webp 1200w
+  "
+  sizes="(max-width:768px) 90vw, 60vw"
+  alt="Aayush"
+  width={1200}
+  height={850}
           className="relative z-10 rounded-full border-amber-100 border-2 w-25 shadow-lg shadow-amber-100/50 hover:w-30 hover:shadow-xl hover:shadow-amber-100/70 transition-all duration-300"
         />
       </div>
