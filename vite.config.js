@@ -6,11 +6,13 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
 
   build: {
-
-      modulePreload: {
-    resolveDependencies: (filename, deps) => {
-      // Don't preload three.js or r3f chunks
-      return deps.filter(dep => !dep.includes('three') && !dep.includes('r3f'))
+     modulePreload: {
+    resolveDependencies: (filename, deps, context) => {
+      // Only suppress preload for the entry chunk
+      if (filename.includes('index')) {
+        return deps.filter(dep => !dep.includes('three') && !dep.includes('r3f'))
+      }
+      return deps
     }
   },
 

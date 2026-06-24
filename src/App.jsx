@@ -28,6 +28,16 @@ const App = () => {
     return () => lenis.destroy()
   }, [])
 
+  useEffect(() => {
+  // After 3 seconds, quietly prefetch the 3D chunks in the background
+  const t = setTimeout(() => {
+    import("./components/services/models/lapContainer")
+    import("./components/services/models/manContainer")
+    import("./components/services/models/robContainer")
+  }, 3000)
+  return () => clearTimeout(t)
+}, [])
+
   useFadeOnScroll(".fade-section", gsapReady)
 
   return (
