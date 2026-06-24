@@ -1,8 +1,42 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect, lazy, Suspense, useRef } from 'react';
+
 const LapContainer = lazy(() => import('./models/lapContainer'))
 const ManContainer = lazy(() => import('./models/manContainer'))
 const RobContainer = lazy(() => import('./models/robContainer'))
-// Responsive Counter Component
+
+const WhenVisible = ({ children }) => {
+  const ref = useRef(null)
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.1 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <div ref={ref} className="w-full h-full relative">
+      {visible && children}
+    </div>
+  )
+}
+
+const Model = ({ id }) => {
+  if (id === 1) return <Suspense fallback={null}><LapContainer /></Suspense>
+  if (id === 2) return <Suspense fallback={null}><ManContainer /></Suspense>
+  return <Suspense fallback={null}><RobContainer /></Suspense>
+}
+
 const Counter = ({ from = 0, to, text }) => {
   const [count, setCount] = useState(from);
 
@@ -22,11 +56,10 @@ const Counter = ({ from = 0, to, text }) => {
         background: 'linear-gradient(135deg, rgba(5, 5, 5, 0.9) 0%, rgba(15, 15, 15, 0.95) 100%)',
         border: '1px solid rgba(40, 40, 40, 0.4)',
         filter: 'grayscale(0.3)',
-        zIndex: 10, // Ensure counter is above overlays
+        zIndex: 10,
         position: 'relative'
       }}
     >
-      {/* Multi-layered glow effects */}
       <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-700"
            style={{
              background: 'linear-gradient(135deg, rgba(20, 20, 20, 0.6) 0%, rgba(35, 35, 35, 0.5) 50%, rgba(50, 50, 50, 0.4) 100%)',
@@ -34,7 +67,6 @@ const Counter = ({ from = 0, to, text }) => {
              zIndex: -1
            }} />
       
-      {/* Animated energy rings */}
       <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700">
         <div className="absolute inset-2 rounded-xl border border-white/20 group-hover:border-white/40"
              style={{
@@ -43,9 +75,7 @@ const Counter = ({ from = 0, to, text }) => {
              }} />
       </div>
       
-      {/* Main content container */}
       <div className="relative px-6 py-4">
-        {/* Holographic scan line effect */}
         <div className="absolute inset-0 overflow-hidden rounded-2xl">
           <div 
             className="absolute w-full h-1 opacity-0 group-hover:opacity-100"
@@ -56,7 +86,6 @@ const Counter = ({ from = 0, to, text }) => {
               boxShadow: '0 0 15px rgba(255, 255, 255, 0.4)'
             }}
           />
-          {/* Secondary scan line */}
           <div 
             className="absolute w-full h-0.5 opacity-0 group-hover:opacity-70"
             style={{
@@ -67,7 +96,6 @@ const Counter = ({ from = 0, to, text }) => {
           />
         </div>
         
-        {/* Text content - Centered */}
         <div className="text-center px-6">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-2 sm:mb-3 group-hover:text-white transition-all duration-700 group-hover:scale-105 whitespace-nowrap"
               style={{
@@ -92,7 +120,6 @@ const Counter = ({ from = 0, to, text }) => {
         </div>
       </div>
       
-      {/* Particle effects */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl">
         {[...Array(3)].map((_, i) => (
           <div
@@ -110,34 +137,12 @@ const Counter = ({ from = 0, to, text }) => {
   );
 };
 
-// Main Services Component
 const Services = () => {
   const [currentServiceId, setCurrentServiceId] = useState(1);
   const services = [
-    {
-      id: 1,
-      img: "/web.webp",
-      title: "Web Development",
-      counter: 10,
-      width: 241,
-      height: 236
-    },
-    {
-      id: 2,
-      img: "/soft.webp",
-      title: "Software Development",
-      counter: 5,
-      width: 235,
-      height: 236
-    },
-    {
-      id: 3,
-      img: "/brand.webp",
-      title: "AI Agents",
-      counter: 3,
-      width: 233,
-      height: 237
-    },
+    { id: 1, img: "/web.webp",   title: "Web Development",      counter: 10, width: 241, height: 236 },
+    { id: 2, img: "/soft.webp",  title: "Software Development", counter: 5,  width: 235, height: 236 },
+    { id: 3, img: "/brand.webp", title: "AI Agents",            counter: 3,  width: 233, height: 237 },
   ];
 
   return (
@@ -147,196 +152,166 @@ const Services = () => {
         background: 'linear-gradient(135deg, #000000 0%, #0a0a0a 15%, #1a1a1a 30%, #2a2a2a 45%, #1a1a1a 60%, #0f0f0f 80%, #000000 100%)',
         willChange: 'auto',
         position: 'relative',
-        zIndex: 1 // Ensure the main container has proper z-index
+        zIndex: 1
       }}
     >
       {/* Left Side - Main Content */}
       <div className="w-full lg:w-1/2 flex flex-col justify-center px-4 sm:px-6 lg:px-8 py-8 lg:py-0 relative z-20">
         
-        {/* Header */}
         <h1 className="font-[anzo4] text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold items-center tracking-tighter justify-center flex mb-8 lg:mb-12 text-center relative z-30">
           <span className="text-white">What can I assist you with?</span>
         </h1>
 
-        {/* Services Container */}
         <div className="w-full max-w-2xl mx-auto lg:w-5/6 items-center flex flex-col gap-4 sm:gap-6 relative z-30">
           {services.map((service) => {
             const isActive = currentServiceId === service.id;
 
             return (
-            <div 
-              className="group relative w-full sm:w-5/6 lg:w-full p-1 rounded-2xl cursor-pointer transition-all duration-700 hover:scale-105"
-              key={service.id}
-              width={service.width}
-              height={service.height}
-              onClick={() => setCurrentServiceId(service.id)}
-              style={{
-                background: 'linear-gradient(135deg, rgba(5, 5, 5, 0.9) 0%, rgba(15, 15, 15, 0.95) 100%)',
-                border: isActive ? '1.5px solid rgba(255, 255, 255, 0.55)' : '1px solid rgba(40, 40, 40, 0.4)',
-                boxShadow: isActive
-                  ? '0 0 25px rgba(255, 255, 255, 0.25), 0 0 60px rgba(255, 255, 255, 0.12), inset 0 0 20px rgba(255, 255, 255, 0.06)'
-                  : 'none',
-                filter: isActive ? 'grayscale(0)' : 'grayscale(0.3)',
-                zIndex: 50, // High z-index to ensure buttons are clickable
-                position: 'relative'
-              }}
-            >
-              {/* Aura rings — only emit while this card is active */}
-              {isActive && (
-                <>
-                  <div className="absolute inset-0 rounded-2xl pointer-events-none"
-                       style={{
-                         border: '1.5px solid rgba(255, 255, 255, 0.5)',
-                         animation: 'aura-emit 2.4s ease-out infinite'
-                       }} />
-                  <div className="absolute inset-0 rounded-2xl pointer-events-none"
-                       style={{
-                         border: '1.5px solid rgba(255, 255, 255, 0.5)',
-                         animation: 'aura-emit 2.4s ease-out infinite 1.2s'
-                       }} />
-                </>
-              )}
-
-              {/* Multi-layered glow effects */}
-              <div className={`absolute inset-0 rounded-2xl transition-all duration-700 pointer-events-none ${isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
-                   style={{
-                     background: 'linear-gradient(135deg, rgba(20, 20, 20, 0.6) 0%, rgba(35, 35, 35, 0.5) 50%, rgba(50, 50, 50, 0.4) 100%)',
-                     boxShadow: '0 0 40px rgba(255, 255, 255, 0.1), inset 0 0 30px rgba(30, 30, 30, 0.3)',
-                     zIndex: -1
-                   }} />
-              
-              {/* Animated energy rings */}
-              <div className={`absolute inset-0 rounded-2xl transition-opacity duration-700 pointer-events-none ${isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
-                <div className="absolute inset-2 rounded-xl border border-white/20 group-hover:border-white/40"
-                     style={{
-                       animation: 'energy-pulse 2s ease-in-out infinite',
-                       boxShadow: '0 0 20px rgba(255, 255, 255, 0.15)'
-                     }} />
-              </div>
-              
-              {/* Main content container */}
               <div 
-                className="relative flex items-center p-3 sm:p-4 lg:p-6 rounded-2xl backdrop-blur-sm transition-all duration-700 z-10"
+                className="group relative w-full sm:w-5/6 lg:w-full p-1 rounded-2xl cursor-pointer transition-all duration-700 hover:scale-105"
+                key={service.id}
+                width={service.width}
+                height={service.height}
+                onClick={() => setCurrentServiceId(service.id)}
                 style={{
-                  background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.98) 0%, rgba(10, 10, 10, 0.95) 50%, rgba(5, 5, 5, 0.98) 100%)',
-                  border: isActive ? '1px solid rgba(255, 255, 255, 0.18)' : '1px solid rgba(40, 40, 40, 0.25)',
+                  background: 'linear-gradient(135deg, rgba(5, 5, 5, 0.9) 0%, rgba(15, 15, 15, 0.95) 100%)',
+                  border: isActive ? '1.5px solid rgba(255, 255, 255, 0.55)' : '1px solid rgba(40, 40, 40, 0.4)',
                   boxShadow: isActive
-                    ? 'inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 8px 32px rgba(0, 0, 0, 0.9), 0 0 18px rgba(255, 255, 255, 0.08)'
-                    : 'inset 0 1px 0 rgba(60, 60, 60, 0.1), 0 8px 32px rgba(0, 0, 0, 0.9)'
+                    ? '0 0 25px rgba(255, 255, 255, 0.25), 0 0 60px rgba(255, 255, 255, 0.12), inset 0 0 20px rgba(255, 255, 255, 0.06)'
+                    : 'none',
+                  filter: isActive ? 'grayscale(0)' : 'grayscale(0.3)',
+                  zIndex: 50,
+                  position: 'relative'
                 }}
               >
-                {/* Holographic scan line effect */}
-                <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
-                  <div 
-                    className="absolute w-full h-1 opacity-0 group-hover:opacity-100"
-                    style={{
-                      background: 'linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(80, 80, 80, 0.6) 10%, rgba(160, 160, 160, 0.9) 30%, rgba(255, 255, 255, 1) 50%, rgba(160, 160, 160, 0.9) 70%, rgba(80, 80, 80, 0.6) 90%, rgba(0, 0, 0, 0) 100%)',
-                      animation: 'scan-line 2.5s ease-in-out infinite',
-                      filter: 'blur(0.3px)',
-                      boxShadow: '0 0 15px rgba(255, 255, 255, 0.4)'
-                    }}
-                  />
-                  {/* Secondary scan line */}
-                  <div 
-                    className="absolute w-full h-0.5 opacity-0 group-hover:opacity-70"
-                    style={{
-                      background: 'linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(180, 180, 180, 0.7) 50%, rgba(0, 0, 0, 0) 100%)',
-                      animation: 'scan-line-2 3s ease-in-out infinite 0.5s',
-                      filter: 'blur(0.8px)'
-                    }}
-                  />
+                {isActive && (
+                  <>
+                    <div className="absolute inset-0 rounded-2xl pointer-events-none"
+                         style={{ border: '1.5px solid rgba(255, 255, 255, 0.5)', animation: 'aura-emit 2.4s ease-out infinite' }} />
+                    <div className="absolute inset-0 rounded-2xl pointer-events-none"
+                         style={{ border: '1.5px solid rgba(255, 255, 255, 0.5)', animation: 'aura-emit 2.4s ease-out infinite 1.2s' }} />
+                  </>
+                )}
+
+                <div className={`absolute inset-0 rounded-2xl transition-all duration-700 pointer-events-none ${isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
+                     style={{
+                       background: 'linear-gradient(135deg, rgba(20, 20, 20, 0.6) 0%, rgba(35, 35, 35, 0.5) 50%, rgba(50, 50, 50, 0.4) 100%)',
+                       boxShadow: '0 0 40px rgba(255, 255, 255, 0.1), inset 0 0 30px rgba(30, 30, 30, 0.3)',
+                       zIndex: -1
+                     }} />
+                
+                <div className={`absolute inset-0 rounded-2xl transition-opacity duration-700 pointer-events-none ${isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
+                  <div className="absolute inset-2 rounded-xl border border-white/20 group-hover:border-white/40"
+                       style={{ animation: 'energy-pulse 2s ease-in-out infinite', boxShadow: '0 0 20px rgba(255, 255, 255, 0.15)' }} />
                 </div>
                 
-                {/* Icon container with enhanced glow effect */}
-                <div className="relative mr-3 sm:mr-4 lg:mr-6">
-                  {/* Outer glow ring */}
-                  <div className={`absolute inset-0 rounded-full transition-all duration-700 pointer-events-none ${isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
-                       style={{
-                         background: 'radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0) 70%)',
-                         animation: 'pulse-glow 2s ease-in-out infinite',
-                         transform: 'scale(1.5)',
-                         filter: 'blur(8px)'
-                       }} />
-                  
-                  <div className="relative w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 flex items-center justify-center rounded-full transition-all duration-700 group-hover:rotate-12"
-                       style={{
-                         background: 'linear-gradient(135deg, rgba(15, 15, 15, 0.8) 0%, rgba(25, 25, 25, 0.6) 50%, rgba(40, 40, 40, 0.4) 100%)',
-                         border: isActive ? '2px solid rgba(255, 255, 255, 0.5)' : '2px solid rgba(60, 60, 60, 0.4)',
-                         boxShadow: isActive
-                           ? '0 0 25px rgba(255, 255, 255, 0.25), inset 0 0 20px rgba(20, 20, 20, 0.5)'
-                           : '0 0 25px rgba(255, 255, 255, 0.08), inset 0 0 20px rgba(20, 20, 20, 0.5)'
-                       }}>
-                    
-                    {/* Inner energy core */}
-                    <div className={`absolute inset-2 rounded-full transition-opacity duration-700 pointer-events-none ${isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
-                         style={{
-                           background: 'radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, rgba(0, 0, 0, 0) 80%)',
-                           animation: 'energy-core 1.5s ease-in-out infinite alternate'
-                         }} />
-                    
-                    <img 
-                      src={service.img} 
-                      alt="" 
-                      className={`relative w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 object-contain transition-all duration-700 group-hover:scale-110 z-10 ${isActive ? 'brightness-200 contrast-150' : 'group-hover:brightness-200 group-hover:contrast-150'}`}
+                <div 
+                  className="relative flex items-center p-3 sm:p-4 lg:p-6 rounded-2xl backdrop-blur-sm transition-all duration-700 z-10"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.98) 0%, rgba(10, 10, 10, 0.95) 50%, rgba(5, 5, 5, 0.98) 100%)',
+                    border: isActive ? '1px solid rgba(255, 255, 255, 0.18)' : '1px solid rgba(40, 40, 40, 0.25)',
+                    boxShadow: isActive
+                      ? 'inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 8px 32px rgba(0, 0, 0, 0.9), 0 0 18px rgba(255, 255, 255, 0.08)'
+                      : 'inset 0 1px 0 rgba(60, 60, 60, 0.1), 0 8px 32px rgba(0, 0, 0, 0.9)'
+                  }}
+                >
+                  <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
+                    <div 
+                      className="absolute w-full h-1 opacity-0 group-hover:opacity-100"
                       style={{
-                        filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 0.3)) brightness(1.3) contrast(1.1)'
+                        background: 'linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(80, 80, 80, 0.6) 10%, rgba(160, 160, 160, 0.9) 30%, rgba(255, 255, 255, 1) 50%, rgba(160, 160, 160, 0.9) 70%, rgba(80, 80, 80, 0.6) 90%, rgba(0, 0, 0, 0) 100%)',
+                        animation: 'scan-line 2.5s ease-in-out infinite',
+                        filter: 'blur(0.3px)',
+                        boxShadow: '0 0 15px rgba(255, 255, 255, 0.4)'
+                      }}
+                    />
+                    <div 
+                      className="absolute w-full h-0.5 opacity-0 group-hover:opacity-70"
+                      style={{
+                        background: 'linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(180, 180, 180, 0.7) 50%, rgba(0, 0, 0, 0) 100%)',
+                        animation: 'scan-line-2 3s ease-in-out infinite 0.5s',
+                        filter: 'blur(0.8px)'
                       }}
                     />
                   </div>
-                </div>
-                
-                {/* Text content */}
-                <div className="flex-1">
-                  <h2 className="text-lg sm:text-xl lg:text-[23px] font-bold text-white mb-1 group-hover:text-white transition-all duration-700 group-hover:scale-105 origin-left"
-                      style={{
-                        textShadow: '0 0 20px rgba(255, 255, 255, 0.3), 0 0 40px rgba(255, 255, 255, 0.1)',
-                        fontFamily: 'system-ui, -apple-system, sans-serif',
-                        letterSpacing: '1px'
-                      }}>
-                    {service.title}
-                  </h2>
-                  <h3 className="text-gray-500 font-[anzo3] group-hover:text-gray-300 transition-all duration-700 text-sm sm:text-base"
-                      style={{
-                        textShadow: '0 0 10px rgba(255, 255, 255, 0.2)',
-                        letterSpacing: '0.5px'
-                      }}>
-                    <span className={`inline-block w-2 h-2 rounded-full mr-2 transition-all duration-700 ${isActive ? 'bg-white animate-pulse shadow-lg shadow-white/40' : 'bg-gray-500 group-hover:animate-pulse group-hover:shadow-lg group-hover:shadow-white/30 group-hover:bg-gray-300'}`} />
-                    {service.counter} Projects
-                  </h3>
-                </div>
-                
-                {/* Arrow indicator */}
-                <div className={`ml-2 sm:ml-4 text-gray-400 transform transition-all duration-700 ${isActive ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4 group-hover:opacity-100 group-hover:translate-x-0'}`}>
-                  <div className="relative">
-                    {/* Glowing background */}
-                    <div className="absolute inset-0 bg-white rounded-full opacity-10 blur-sm scale-150 pointer-events-none" />
-                    <svg width="20" height="20" className="sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
-                         style={{ filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 0.4))' }}>
-                      <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
+                  
+                  <div className="relative mr-3 sm:mr-4 lg:mr-6">
+                    <div className={`absolute inset-0 rounded-full transition-all duration-700 pointer-events-none ${isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
+                         style={{
+                           background: 'radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0) 70%)',
+                           animation: 'pulse-glow 2s ease-in-out infinite',
+                           transform: 'scale(1.5)',
+                           filter: 'blur(8px)'
+                         }} />
+                    
+                    <div className="relative w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 flex items-center justify-center rounded-full transition-all duration-700 group-hover:rotate-12"
+                         style={{
+                           background: 'linear-gradient(135deg, rgba(15, 15, 15, 0.8) 0%, rgba(25, 25, 25, 0.6) 50%, rgba(40, 40, 40, 0.4) 100%)',
+                           border: isActive ? '2px solid rgba(255, 255, 255, 0.5)' : '2px solid rgba(60, 60, 60, 0.4)',
+                           boxShadow: isActive
+                             ? '0 0 25px rgba(255, 255, 255, 0.25), inset 0 0 20px rgba(20, 20, 20, 0.5)'
+                             : '0 0 25px rgba(255, 255, 255, 0.08), inset 0 0 20px rgba(20, 20, 20, 0.5)'
+                         }}>
+                      
+                      <div className={`absolute inset-2 rounded-full transition-opacity duration-700 pointer-events-none ${isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
+                           style={{
+                             background: 'radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, rgba(0, 0, 0, 0) 80%)',
+                             animation: 'energy-core 1.5s ease-in-out infinite alternate'
+                           }} />
+                      
+                      <img 
+                        src={service.img} 
+                        alt="" 
+                        className={`relative w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 object-contain transition-all duration-700 group-hover:scale-110 z-10 ${isActive ? 'brightness-200 contrast-150' : 'group-hover:brightness-200 group-hover:contrast-150'}`}
+                        style={{ filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 0.3)) brightness(1.3) contrast(1.1)' }}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="flex-1">
+                    <h2 className="text-lg sm:text-xl lg:text-[23px] font-bold text-white mb-1 group-hover:text-white transition-all duration-700 group-hover:scale-105 origin-left"
+                        style={{
+                          textShadow: '0 0 20px rgba(255, 255, 255, 0.3), 0 0 40px rgba(255, 255, 255, 0.1)',
+                          fontFamily: 'system-ui, -apple-system, sans-serif',
+                          letterSpacing: '1px'
+                        }}>
+                      {service.title}
+                    </h2>
+                    <h3 className="text-gray-500 font-[anzo3] group-hover:text-gray-300 transition-all duration-700 text-sm sm:text-base"
+                        style={{ textShadow: '0 0 10px rgba(255, 255, 255, 0.2)', letterSpacing: '0.5px' }}>
+                      <span className={`inline-block w-2 h-2 rounded-full mr-2 transition-all duration-700 ${isActive ? 'bg-white animate-pulse shadow-lg shadow-white/40' : 'bg-gray-500 group-hover:animate-pulse group-hover:shadow-lg group-hover:shadow-white/30 group-hover:bg-gray-300'}`} />
+                      {service.counter} Projects
+                    </h3>
+                  </div>
+                  
+                  <div className={`ml-2 sm:ml-4 text-gray-400 transform transition-all duration-700 ${isActive ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4 group-hover:opacity-100 group-hover:translate-x-0'}`}>
+                    <div className="relative">
+                      <div className="absolute inset-0 bg-white rounded-full opacity-10 blur-sm scale-150 pointer-events-none" />
+                      <svg width="20" height="20" className="sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+                           style={{ filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 0.4))' }}>
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                      </svg>
+                    </div>
                   </div>
                 </div>
+                
+                <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl">
+                  {[...Array(3)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="absolute w-1 h-1 bg-cyan-400 rounded-full opacity-0 group-hover:opacity-100"
+                      style={{
+                        left: `${20 + i * 30}%`,
+                        top: `${30 + i * 20}%`,
+                        animation: `float-particle 3s ease-in-out infinite ${i * 0.5}s`
+                      }}
+                    />
+                  ))}
+                </div>
               </div>
-              
-              {/* Particle effects */}
-              <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl">
-                {[...Array(3)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="absolute w-1 h-1 bg-cyan-400 rounded-full opacity-0 group-hover:opacity-100"
-                    style={{
-                      left: `${20 + i * 30}%`,
-                      top: `${30 + i * 20}%`,
-                      animation: `float-particle 3s ease-in-out infinite ${i * 0.5}s`
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
             );
           })}
           
-          {/* Counter Component - Content fitting square */}
           <div className="flex justify-center relative z-40">
             <div className="w-fit">
               <Counter from={0} to={18} text="Projects Completed"/>
@@ -347,148 +322,63 @@ const Services = () => {
 
       {/* Right Side - 3D Model (Desktop) */}
       <div className="hidden lg:flex w-1/2 flex-col justify-center items-center relative p-8 z-10">
-        {/* 3D Model Container with proper sizing */}
-        <div 
+        <div
           className="w-full h-full flex items-center justify-center"
-          style={{
-            minHeight: '600px',
-            maxHeight: '800px'
-          }}
+          style={{ minHeight: '600px', maxHeight: '800px' }}
         >
-          <div 
-            className="w-full h-full relative"
-            style={{
-              minWidth: '400px',
-              minHeight: '600px'
-            }}
-          >
-           {currentServiceId === 1 
-  ? <Suspense fallback={null}><LapContainer /></Suspense> 
-  : currentServiceId === 2 
-  ? <Suspense fallback={null}><ManContainer /></Suspense>
-  : <Suspense fallback={null}><RobContainer /></Suspense>
-}
-          </div>
+          <WhenVisible>
+            <div className="w-full h-full" style={{ minWidth: '400px', minHeight: '600px' }}>
+              <Model id={currentServiceId} />
+            </div>
+          </WhenVisible>
         </div>
       </div>
 
       {/* Bottom Section - 3D Model (Tablet/Medium screens) */}
       <div className="hidden md:flex lg:hidden w-full flex-col justify-center items-center relative px-4 py-20 z-10">
-        <div 
+        <div
           className="w-full flex items-center justify-center"
-          style={{
-            height: '200px',
-            maxWidth: '450px'
-          }}
+          style={{ height: '200px', maxWidth: '450px' }}
         >
-          <div 
-            className="w-full h-full relative"
-            style={{
-              minWidth: '300px',
-              minHeight: '750px'
-            }}
-          >
-            {currentServiceId === 1 
-  ? <Suspense fallback={null}><LapContainer /></Suspense> 
-  : currentServiceId === 2 
-  ? <Suspense fallback={null}><ManContainer /></Suspense>
-  : <Suspense fallback={null}><RobContainer /></Suspense>
-}
-          </div>
+          <WhenVisible>
+            <div className="w-full h-full" style={{ minWidth: '300px', minHeight: '750px' }}>
+              <Model id={currentServiceId} />
+            </div>
+          </WhenVisible>
         </div>
       </div>
 
-      
       <style jsx>{`
         @keyframes energy-pulse {
-          0%, 100% { 
-            transform: scale(1);
-            opacity: 0.3;
-          }
-          50% { 
-            transform: scale(1.1);
-            opacity: 0.6;
-          }
+          0%, 100% { transform: scale(1); opacity: 0.3; }
+          50% { transform: scale(1.1); opacity: 0.6; }
         }
-        
         @keyframes scan-line {
-          0% { 
-            top: -4px; 
-            opacity: 0; 
-            transform: translateX(-100%);
-          }
-          10% { 
-            opacity: 1; 
-          }
-          90% { 
-            opacity: 1; 
-          }
-          100% { 
-            top: 100%; 
-            opacity: 0; 
-            transform: translateX(100%);
-          }
+          0% { top: -4px; opacity: 0; transform: translateX(-100%); }
+          10% { opacity: 1; }
+          90% { opacity: 1; }
+          100% { top: 100%; opacity: 0; transform: translateX(100%); }
         }
-        
         @keyframes scan-line-2 {
-          0% { 
-            top: -2px; 
-            opacity: 0; 
-            transform: translateX(-100%) scaleX(0.5);
-          }
-          50% { 
-            opacity: 0.6; 
-            transform: translateX(0%) scaleX(1);
-          }
-          100% { 
-            top: 100%; 
-            opacity: 0; 
-            transform: translateX(100%) scaleX(0.5);
-          }
+          0% { top: -2px; opacity: 0; transform: translateX(-100%) scaleX(0.5); }
+          50% { opacity: 0.6; transform: translateX(0%) scaleX(1); }
+          100% { top: 100%; opacity: 0; transform: translateX(100%) scaleX(0.5); }
         }
-        
         @keyframes pulse-glow {
-          0%, 100% { 
-            opacity: 0.3;
-            transform: scale(1.3);
-          }
-          50% { 
-            opacity: 0.6;
-            transform: scale(1.6);
-          }
+          0%, 100% { opacity: 0.3; transform: scale(1.3); }
+          50% { opacity: 0.6; transform: scale(1.6); }
         }
-        
         @keyframes energy-core {
-          0% { 
-            opacity: 0.2;
-            transform: scale(0.8);
-          }
-          100% { 
-            opacity: 0.5;
-            transform: scale(1.2);
-          }
+          0% { opacity: 0.2; transform: scale(0.8); }
+          100% { opacity: 0.5; transform: scale(1.2); }
         }
-        
         @keyframes float-particle {
-          0%, 100% { 
-            transform: translateY(0px) rotate(0deg) scale(0.8); 
-            opacity: 0; 
-          }
-          50% { 
-            transform: translateY(-15px) rotate(180deg) scale(1.2); 
-            opacity: 1; 
-          }
+          0%, 100% { transform: translateY(0px) rotate(0deg) scale(0.8); opacity: 0; }
+          50% { transform: translateY(-15px) rotate(180deg) scale(1.2); opacity: 1; }
         }
-
         @keyframes aura-emit {
-          0% {
-            transform: scale(1);
-            opacity: 0.6;
-          }
-          100% {
-            transform: scale(1.1);
-            opacity: 0;
-          }
+          0% { transform: scale(1); opacity: 0.6; }
+          100% { transform: scale(1.1); opacity: 0; }
         }
       `}</style>
     </div>

@@ -4,7 +4,14 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/logo.webp" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preload" as="image" href="/main.webp" fetchPriority="high" />
+    <link
+      rel="preload"
+      as="image"
+      href="/main_md.webp"
+      imagesrcset="/main_sm.webp 600w, /main_md.webp 900w, /main_lg.webp 1200w"
+      imagesizes="(max-width:768px) 90vw, 60vw"
+      fetchpriority="high"
+    />
     <title>Aayush</title>
   </head>
   <body>

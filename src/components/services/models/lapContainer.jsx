@@ -22,9 +22,9 @@ const LapContainer = () => {
       dpr={[1, mobile.current ? 1.5 : 2]}
       gl={{ antialias: !mobile.current, powerPreference: "high-performance" }}
       style={{ touchAction: "none" }}
+      frameloop="demand"
     >
       <AdaptiveDpr pixelated />
-
       <PerspectiveCamera makeDefault position={[-6.5, 2, 6.1]} fov={50} zoom={isMd ? 0.5 : 0.7} />
       <OrbitControls
         enableZoom={false}
@@ -34,7 +34,6 @@ const LapContainer = () => {
         dampingFactor={0.05}
         regress
       />
-
       <Suspense fallback={null}>
         <Environment preset="night" />
         <ambientLight intensity={0.3} />

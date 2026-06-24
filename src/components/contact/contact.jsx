@@ -279,7 +279,7 @@ const Contact = () => {
                     <svg className="w-4 h-4 animate-spin text-black" fill="none" viewBox="0 0 16 16">
                       <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="2" strokeDasharray="12 6" />
                     </svg>
-                    Transmitting...
+                    Sending...
                   </>
                 ) : status === 'success' ? (
                   'Message Sent'

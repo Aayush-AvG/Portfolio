@@ -6,6 +6,14 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
 
   build: {
+
+      modulePreload: {
+    resolveDependencies: (filename, deps) => {
+      // Don't preload three.js or r3f chunks
+      return deps.filter(dep => !dep.includes('three') && !dep.includes('r3f'))
+    }
+  },
+
     // 1. Minify with esbuild (default) — make sure it's not disabled
     minify: 'esbuild',
 
