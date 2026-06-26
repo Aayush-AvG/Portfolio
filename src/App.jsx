@@ -20,13 +20,16 @@ const OnMount = ({ onMount }) => {
 const App = () => {
   const gsapReady = useRef(false)
 
-  useEffect(() => {
-    const lenis = new Lenis()
-    lenis.on("scroll", ScrollTrigger.update)
-    gsap.ticker.add((time) => lenis.raf(time * 1000))
-    gsap.ticker.lagSmoothing(0)
-    return () => lenis.destroy()
-  }, [])
+useEffect(() => {
+  if (window.innerWidth < 768) return // native scroll on phones, done
+
+  const lenis = new Lenis()
+  lenis.on("scroll", ScrollTrigger.update)
+  gsap.ticker.add((time) => lenis.raf(time * 1000))
+  gsap.ticker.lagSmoothing(0)
+
+  return () => lenis.destroy()
+}, [])
 
   useEffect(() => {
   // After 3 seconds, quietly prefetch the 3D chunks in the background

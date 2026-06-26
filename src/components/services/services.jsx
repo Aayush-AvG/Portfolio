@@ -32,11 +32,20 @@ const WhenVisible = ({ children }) => {
 }
 
 const Model = ({ id }) => {
+  const [isTabletOrAbove, setIsTabletOrAbove] = useState(() => window.innerWidth >= 768)
+
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)')
+    const handler = (e) => setIsTabletOrAbove(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
+
+  if (!isTabletOrAbove) return null
   if (id === 1) return <Suspense fallback={null}><LapContainer /></Suspense>
   if (id === 2) return <Suspense fallback={null}><ManContainer /></Suspense>
   return <Suspense fallback={null}><RobContainer /></Suspense>
 }
-
 const Counter = ({ from = 0, to, text }) => {
   const [count, setCount] = useState(from);
 
