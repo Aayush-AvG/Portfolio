@@ -1,10 +1,25 @@
 import { useState, useEffect, lazy, Suspense, useRef } from 'react';
+import { useGLTF, useTexture } from '@react-three/drei';
 
 const LapContainer = lazy(() => import('./models/lapContainer'))
 const ManContainer = lazy(() => import('./models/manContainer'))
 const RobContainer = lazy(() => import('./models/robContainer'))
 
-const WhenVisible = ({ children }) => {
+// Warms all three models' actual assets (not just JS chunks) once the
+// Services section is visible — fired regardless of which card is active,
+// so clicking a card later is a warm hit instead of a cold fetch.
+// Adjust the man/rob paths to match whatever those containers actually load.
+let assetsPreloaded = false
+const preloadAllModelAssets = () => {
+  if (assetsPreloaded) return
+  assetsPreloaded = true
+  useGLTF.preload('/laptop.glb')
+  useTexture.preload('/ss.webp')
+  // useGLTF.preload('/man.glb')
+  // useGLTF.preload('/rob.glb')
+}
+
+const WhenVisible = ({ children, onVisible }) => {
   const ref = useRef(null)
   const [visible, setVisible] = useState(false)
 
@@ -15,6 +30,7 @@ const WhenVisible = ({ children }) => {
       ([entry]) => {
         if (entry.isIntersecting) {
           setVisible(true)
+          onVisible?.()
           observer.disconnect()
         }
       },
@@ -22,7 +38,7 @@ const WhenVisible = ({ children }) => {
     )
     observer.observe(el)
     return () => observer.disconnect()
-  }, [])
+  }, [onVisible])
 
   return (
     <div ref={ref} className="w-full h-full relative">
@@ -30,6 +46,13 @@ const WhenVisible = ({ children }) => {
     </div>
   )
 }
+
+// Simple loading indicator instead of a blank canvas
+const ModelFallback = () => (
+  <div className="w-full h-full flex items-center justify-center">
+    <div className="w-10 h-10 border-2 border-white/20 border-t-white/60 rounded-full animate-spin" />
+  </div>
+)
 
 const Model = ({ id }) => {
   const [isTabletOrAbove, setIsTabletOrAbove] = useState(() => window.innerWidth >= 768)
@@ -42,9 +65,9 @@ const Model = ({ id }) => {
   }, [])
 
   if (!isTabletOrAbove) return null
-  if (id === 1) return <Suspense fallback={null}><LapContainer /></Suspense>
-  if (id === 2) return <Suspense fallback={null}><ManContainer /></Suspense>
-  return <Suspense fallback={null}><RobContainer /></Suspense>
+  if (id === 1) return <Suspense fallback={<ModelFallback />}><LapContainer /></Suspense>
+  if (id === 2) return <Suspense fallback={<ModelFallback />}><ManContainer /></Suspense>
+  return <Suspense fallback={<ModelFallback />}><RobContainer /></Suspense>
 }
 const Counter = ({ from = 0, to, text }) => {
   const [count, setCount] = useState(from);
@@ -335,7 +358,7 @@ const Services = () => {
           className="w-full h-full flex items-center justify-center"
           style={{ minHeight: '600px', maxHeight: '800px' }}
         >
-          <WhenVisible>
+          <WhenVisible onVisible={preloadAllModelAssets}>
             <div className="w-full h-full" style={{ minWidth: '400px', minHeight: '600px' }}>
               <Model id={currentServiceId} />
             </div>
@@ -349,7 +372,7 @@ const Services = () => {
           className="w-full flex items-center justify-center"
           style={{ height: '200px', maxWidth: '450px' }}
         >
-          <WhenVisible>
+          <WhenVisible onVisible={preloadAllModelAssets}>
             <div className="w-full h-full" style={{ minWidth: '300px', minHeight: '750px' }}>
               <Model id={currentServiceId} />
             </div>
