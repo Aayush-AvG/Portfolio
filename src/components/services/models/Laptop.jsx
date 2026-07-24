@@ -1,11 +1,9 @@
 import React, { useRef, useEffect } from "react";
-import { useGLTF, useAnimations } from "@react-three/drei";
+import { useGLTF, useAnimations, useTexture } from "@react-three/drei";
 import { LoopOnce } from "three";
-import { useTexture } from "@react-three/drei";
 import * as THREE from "three";
 
 useGLTF.setDecoderPath('/draco/');
-
 
 export function Laptop(props) {
   const group = useRef();
@@ -14,9 +12,11 @@ export function Laptop(props) {
   const { actions, names } = useAnimations(animations, group);
   const screenTexture = useTexture("/ss.webp");
 
-screenTexture.repeat.set(2, 2);
-screenTexture.offset.set(-0.5, -0.5);
-
+  // Only apply texture transforms once per texture load, not on every render
+  useEffect(() => {
+    screenTexture.repeat.set(2, 2);
+    screenTexture.offset.set(-0.5, -0.5);
+  }, [screenTexture]);
 
   useEffect(() => {
     if (names.length > 0) {
@@ -231,3 +231,5 @@ screenTexture.offset.set(-0.5, -0.5);
     </group>
   );
 }
+
+useGLTF.preload("/laptop.glb");
