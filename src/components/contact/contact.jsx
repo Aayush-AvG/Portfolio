@@ -2,10 +2,10 @@ import { useState, useRef } from 'react';
 import emailjs from '@emailjs/browser';
 
 // ─── EmailJS Configuration ─────────────────────────────────────────────────
-const EJ_SERVICE_ID = 'service_p5ymk9f';   
-const EJ_PUBLIC_KEY = 'F-iyxL2osQWl7Y_vC';
-const EJ_TEMPLATE_CONTACT = 'template_vesdb2r'; 
-const EJ_TEMPLATE_AUTOREPLY = 'template_2z5ztxr'; 
+const EJ_SERVICE_ID = import.meta.env.VITE_EJ_SERVICE_ID;
+const EJ_PUBLIC_KEY = import.meta.env.VITE_EJ_PUBLIC_KEY;
+const EJ_TEMPLATE_CONTACT = import.meta.env.VITE_EJ_TEMPLATE_CONTACT;
+const EJ_TEMPLATE_AUTOREPLY = import.meta.env.VITE_EJ_TEMPLATE_AUTOREPLY;
 
 // ─── Reusable Glassmorphic Label ───────────────────────────────────────────
 const GlassLabel = ({ text }) => (
